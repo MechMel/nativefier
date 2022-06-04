@@ -47,6 +47,10 @@ if (process.argv.indexOf('--verbose') > -1 || safeGetEnv('VERBOSE') === '1') {
 }
 
 let mainWindow: BrowserWindow;
+// Begin New
+app.commandLine.appendSwitch("enable-experimental-web-platform-features");
+// End New
+
 
 const appArgs =
   IS_PLAYWRIGHT && PLAYWRIGHT_CONFIG
