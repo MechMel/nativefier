@@ -5,6 +5,21 @@
  */
 document.addEventListener('DOMContentLoaded', () => {
   injectScripts(); // eslint-disable-line @typescript-eslint/no-use-before-define
+  // Begin New
+  const showPopupBeforeClose = new Event('showPopupBeforeClose');
+  ipcRenderer.on(
+    'closeRequested',
+    function(e, a) {
+      document.dispatchEvent(showPopupBeforeClose);
+    }
+  )
+  document.addEventListener(
+    'confirmClose',
+    function(e) {
+      ipcRenderer.send('confirmClose', '');
+    }
+  );
+  // End New
 });
 
 import * as fs from 'fs';

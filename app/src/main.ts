@@ -10,6 +10,7 @@ import electron, {
   systemPreferences,
   BrowserWindow,
   Event,
+  ipcMain,
 } from 'electron';
 import electronDownload from 'electron-dl';
 
@@ -335,6 +336,40 @@ async function onReady(): Promise<void> {
   // Warning: `mainWindow` below is the *global* unique `mainWindow`, created at init time
   mainWindow = await createMainWindow(appArgs, setDockBadge);
 
+  // Begin New
+  mainWindow.on(
+    'close',
+    function(e) {
+      e.preventDefault();
+      //_showDialog();
+      mainWindow.webContents.send('closeRequested', '');
+      /*async function _showDialog() {
+        let choice = await require('electron').dialog.showMessageBox(
+          mainWindow,
+          {
+            type: 'question',
+            buttons: ['Yes', 'No'],
+            title: 'Confirm',
+            message: 'Are you sure you want to quit?'
+          },
+        );
+        if(choice.response == 0){
+          // Necessary to bypass the repeat-quit-check in the render process.
+          mainWindow.destroy();
+          app.quit();
+        }
+      };*/
+    },
+  );
+  ipcMain.on(
+    'confirmClose',
+    function(e, a) {
+      // Necessary to bypass the repeat-quit-check in the render process.
+      mainWindow.destroy();
+      app.quit();
+    },
+  );
+  // End New
   createTrayIcon(appArgs, mainWindow);
 
   // Register global shortcuts
