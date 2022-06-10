@@ -341,24 +341,7 @@ async function onReady(): Promise<void> {
     'close',
     function(e) {
       e.preventDefault();
-      //_showDialog();
       mainWindow.webContents.send('closeRequested', '');
-      /*async function _showDialog() {
-        let choice = await require('electron').dialog.showMessageBox(
-          mainWindow,
-          {
-            type: 'question',
-            buttons: ['Yes', 'No'],
-            title: 'Confirm',
-            message: 'Are you sure you want to quit?'
-          },
-        );
-        if(choice.response == 0){
-          // Necessary to bypass the repeat-quit-check in the render process.
-          mainWindow.destroy();
-          app.quit();
-        }
-      };*/
     },
   );
   ipcMain.on(
