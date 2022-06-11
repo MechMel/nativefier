@@ -7,10 +7,21 @@ document.addEventListener('DOMContentLoaded', () => {
   injectScripts(); // eslint-disable-line @typescript-eslint/no-use-before-define
   // Begin New
   const showPopupBeforeClose = new Event('showPopupBeforeClose');
+  let appIsReadyToManageCloseRequests = false;
   ipcRenderer.on(
     'closeRequested',
     function(e, a) {
-      document.dispatchEvent(showPopupBeforeClose);
+      if (appIsReadyToManageCloseRequests) {
+        document.dispatchEvent(showPopupBeforeClose);
+      } else {
+        ipcRenderer.send('confirmClose', '');
+      }
+    }
+  );
+  document.addEventListener(
+    'appIsReadyToManageCloseRequests',
+    function(e) {
+      appIsReadyToManageCloseRequests = true;
     }
   );
   document.addEventListener(
