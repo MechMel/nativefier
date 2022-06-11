@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function(e, a) {
       document.dispatchEvent(showPopupBeforeClose);
     }
-  )
+  );
   document.addEventListener(
     'confirmClose',
     function(e) {
